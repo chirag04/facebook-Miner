@@ -1,0 +1,64 @@
+<html>
+
+<head>
+<script type = "text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
+
+<script>
+
+access_token = "YOUR ACCESS TOKEN";  //goto graphi.facebook.com for getting the access token.
+
+function getFacebookIDByEmail(email){
+
+	$.ajax({
+		            type: 'get',
+		            dataType: 'json',
+		            url: 'https://graph.facebook.com/search?access_token='+access_token+'&q='+email+'&type=user',
+		            success: function (json) {        	
+		            	           var data = json.data;
+								   if(data.length > 0) {
+										var user_id = data[0].id;
+										var user_name  = data[0].name
+										getFacebookLikes(user_id);
+								   }
+								   console.log(user_id);
+								   
+		            }
+	});
+				
+}
+
+function getFacebookLikes(user_id) {
+		
+	$.getJSON('https://graph.facebook.com/'+user_id+'/likes?access_token='+access_token, function(response) {
+		var names = [];
+		var categories = [];
+
+		$.each(response.data, function(key, val) {
+			names.push(response.data[key].name);
+			categories.push(response.data[key].category);
+		});
+		
+		console.log(names);
+		
+	});
+}
+
+function getFacebookWallFeed(user_id) {
+
+	//TODO
+
+}
+
+//getFacebookIDByEmail("youremail@domain.com");   	//1994513705868
+//getFacebookLikes("user_id");	    				//array of names
+//getFacebookWallFeed("user_id");
+</script>
+
+</head>
+
+<body>
+
+
+</body>
+
+</html>
